@@ -9,17 +9,17 @@ from app import app
 from models import db, GroceryStore, Employee, Department
 
 # Define possible roles at a grocery store
-roles = [
+roles = {
     "Cashier": ["Produce", "Dairy", "Bakery", "Deli"],
-    "Stocker" ["Produce", "Dairy", "Meat", "Deli"],
+    "Stocker": ["Produce", "Dairy", "Meat", "Deli"],
     "Manager": ["Produce", "Dairy", "Bakery", "Deli", "Meat"],
-    "Customer Service Representative",
-    "Butcher",
-    "Baker",
-    "Produce Clerk",
-    "Dairy/Frozen Foods Clerk",
-    "Deli Clerk"
-]
+    "Customer Service Representative": ["Deli", "Bakery"],
+    "Butcher": ["Meat"],
+    "Baker": ["Bakery"],
+    "Produce Clerk": ["Produce"],
+    "Dairy/Frozen Foods Clerk": ["Dairy"],
+    "Deli Clerk": ["Deli"]
+}
 
 def seed_data():
     fake = Faker()
@@ -54,7 +54,7 @@ def seed_data():
     employees = []
     for _ in range(100):  # Generate 100 employees
         try:
-            role = choice(roles)
+            role = choice(list(roles.keys()))
             random_store = choice(stores)  # Randomly select one of the 4 stores
             name = fake.name()  # Generate employee name
             
@@ -63,10 +63,8 @@ def seed_data():
                 name = "John Doe"  # Fallback to a default name if Faker fails
 
             employee = Employee(
-                user_name=fake.user_name(),
                 role=role,
                 name=name,  # Set the name field
-                password="password123",  # Hashing handled by the Employee model
                 work_hours=f"{randint(20, 40)} hours",
                 grocery_store_id=random_store.id  # Assign the foreign key (id) of the random store
             )
