@@ -10,9 +10,9 @@ from models import db, GroceryStore, Employee, Department
 
 # Define possible roles at a grocery store
 roles = [
-    "Cashier",
-    "Stocker",
-    "Manager",
+    "Cashier": ["Produce", "Dairy", "Bakery", "Deli"],
+    "Stocker" ["Produce", "Dairy", "Meat", "Deli"],
+    "Manager": ["Produce", "Dairy", "Bakery", "Deli", "Meat"],
     "Customer Service Representative",
     "Butcher",
     "Baker",
@@ -96,3 +96,4 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
         seed_data()
+ 
