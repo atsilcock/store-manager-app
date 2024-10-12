@@ -22,26 +22,12 @@ class Employee(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String, nullable=False)
-    password_hash = db.Column(db.String, nullable=False)
-    name = db.Column(db.String)
-    user_name = db.Column(db.String, nullable = False)
-    work_hours = db.Column(db.String)
+    name = db.Column(db.String, nullable=False)
+    work_hours = db.Column(db.String, nullable=False)
     grocery_store_id = db.Column(db.Integer, db.ForeignKey('grocery_store.id'))
     departments = db.relationship('Department', secondary='employee_department', back_populates='employees')
 
     serialize_rules = ('-departments.employees', '-password_hash') 
-
-    @property
-    def password(self):
-        raise AttributeError('Password is not a readable attribute.')
-
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    # Method to verify password
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
         
 
 class Department(db.Model, SerializerMixin):
