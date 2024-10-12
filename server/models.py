@@ -23,6 +23,7 @@ class Employee(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
+    name = db.Column(db.String)
     user_name = db.Column(db.String, nullable = False)
     work_hours = db.Column(db.String)
     grocery_store_id = db.Column(db.Integer, db.ForeignKey('grocery_store.id'))

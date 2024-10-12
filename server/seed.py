@@ -54,6 +54,7 @@ def seed_data():
             employee = Employee(
                 user_name=fake.user_name(),
                 role=role,
+                name=fake.name(),  # Add name generation using Faker
                 password="password123",  # Hashing handled by the Employee model
                 work_hours=f"{randint(20, 40)} hours",
                 grocery_store_id=random_store.id  # Assign the foreign key (id) of the random store
