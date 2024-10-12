@@ -41,8 +41,63 @@ class Employees(Resource):
         db.session.commit()
 
         return make_response(jsonify(new_employee.to_dict(), 201))
+    
 
+class EmployeesById(Resource):
+    def get(self, id):
+        employee = Employee.query.filter_by(id = id).first()
+        if not employee:
+            response = {"message": "No employee has been found"}
+            return make_response(jsonify(response), 404)
+        else:
+            return make_response(jsonify(employee.to_dict()), 200)
         
+    def patch(self, id):
+        data = request.get_json()
+        employee = Employee.query.filter_by(id = id).first()
+        if not employee:
+            response = {"message": "No employee has been found"}
+            return make_response(jsonify(response), 404)
+        else:
+            for key in ["name", "role", "work_hours"]:
+                if key in data:
+                    setattr(employee, key, data[key])
+        db.session.commit()
+        return make_response(jsonify(employee.to_dict()), 200)
+        
+    def delete(self, id):
+        employee = Employee.query.filter_by(id = id).first()
+        if not employee:
+            response = {"message": "No employee has been found"}
+            return make_response(jsonify(response), 404)
+        else:
+            db.session.delete(employee)
+            db.session.commit()
+            return make_response(jsonify({}), 204)
+
+class Store(Resource):
+    def get(self):
+        grocery_stores = [store.to_dict() for store in GroceryStore.query.all()]
+        if not grocery_stores:
+            response = {"message":"store does not exist"}
+            return make_response(jsonify(response), 401)
+        else:
+            return make_response(jsonify(grocery_stores), 200)
+    
+
+class StoreByID(Resource):
+    def get(self, id):
+        grocery_store = GroceryStore.query.filter_by(id=id).first()
+        if not grocery_store:
+            response = {"message":"store does not exist"}
+            return make_response(jsonify(response), 401)
+        else:
+            return make_response(jsonify(grocery_store.to_dict()), 200)
+
+
+api.add_resource(Store, "/store")
+api.add_resource(StoreByID,"/store/<int:id>")
+api.add_resource(EmployeesById, "/employees/<int:id>")        
 api.add_resource(Employees, "/employees")
 
 
