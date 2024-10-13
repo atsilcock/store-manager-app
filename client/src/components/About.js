@@ -36,7 +36,9 @@ function About({ employees, setEmployees }) {
           }}
         >
           <option>Select an employee</option>
-          {employees.map(employee => (
+          {employees
+          .sort((a,b) => a.name.localeCompare(b.name))
+          .map(employee => (
             <option key={employee.id} value={employee.id}>
               {employee.name} | {employee.role}
             </option>

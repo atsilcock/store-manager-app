@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import UpdateEmployeeForm from "./UpdateEmployeeForm"
 
 function EmployeeCard({ employee, employees, setEmployees }) {
     const [employeebyid, setemployeebyid] = ([])
@@ -7,6 +8,9 @@ function EmployeeCard({ employee, employees, setEmployees }) {
     const [role, setRole] = useState("")
     const [workHours, setWorkHours] = useState("")
     const [storeId, setStoreId] = useState("")
+
+    
+
 
     const handleUpdate = (event, id) => {
         event.preventDefault();  // Prevent default form submission behavior
@@ -30,6 +34,11 @@ function EmployeeCard({ employee, employees, setEmployees }) {
           setEmployees(updatedEmployees)
           setUpdateForm(false)
         });
+
+        setName("")
+        setWorkHours("")
+        setRole("")
+        setStoreId("")
       };
 
     const handleUpdateClick = (event) => {
@@ -47,42 +56,18 @@ function EmployeeCard({ employee, employees, setEmployees }) {
       <p><strong>Work Hours:</strong> {employee.work_hours}</p>
       <p><strong>Grocery Store:</strong> {employee.grocery_store_id}</p>
       <button onClick = {handleUpdateClick}>Update</button>
-      {updateForm && (
-        <form onSubmit={(event) => handleUpdate(event, employee.id)}>
-            <h3>Update Employees</h3>
-
-            <lable>Update Name: </lable>
-            <input 
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-            />
-
-            <label>Update Role: </label>
-            <input 
-            type="text"
-            value={role}
-            onChange={e => setRole(e.target.value)}
-            />
-            
-            <label>Update Work Hours:</label>
-            
-            <input 
-            type="number" 
-            value={workHours} 
-            onChange={(e) => setWorkHours(e.target.value)}  // Capture work hours input
-            />
-
-            <label>Update Store Id:</label>
-            <input 
-            type="number" 
-            value={storeId} 
-            onChange={(e) => setStoreId(e.target.value)}  // Capture store ID input
-            />
-
-            <button type="submit">Submit</button>
-        </form>
-      )}
+      <UpdateEmployeeForm
+       name={name}
+       role={role}
+       workHours={workHours}
+       storeId={storeId}
+       setName={setName}
+       setRole={setRole}
+       setWorkHours={setWorkHours}
+       setStoreId={setStoreId}
+       handleUpdate={handleUpdate}
+       employee={employee}
+      />
       <button>Delete</button>
     </div>
   );
