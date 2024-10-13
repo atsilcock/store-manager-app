@@ -29,7 +29,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<HomePage employees={employees} stores = {stores} />} />
-        <Route path="/about" element={<About employees={employees} />} />
+        <Route path="/about" element={<About employees={employees} setEmployees = {employees}/>} />
         <Route path="/New_Employee" element={<New_Employee />} />
       </Routes>
     </Router>

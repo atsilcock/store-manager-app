@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useForMik, Formik, Field } from 'formik';
+import { useFormik, Formik, Field } from 'formik';
 import EmployeeCard from './EmployeeCard';
 
-function About({ employees }) {
+function About({ employees, setEmployees }) {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const handleEmployeeSelection = (employeeId) => {
@@ -10,7 +10,7 @@ function About({ employees }) {
     setSelectedEmployee(selected)
   };
 
-  const formik = useForMik ({
+  const formik = useFormik ({
     initialValues: {
         employeeId: ''
     },
@@ -18,6 +18,7 @@ function About({ employees }) {
         handleEmployeeSelection(values.employeeId)
     }
   })
+
 
   return (
     <div>
@@ -34,7 +35,7 @@ function About({ employees }) {
             handleEmployeeSelection(e.target.value); // Handle employee selection logic
           }}
         >
-          <option value="" disabled>Select an employee</option>
+          <option>Select an employee</option>
           {employees.map(employee => (
             <option key={employee.id} value={employee.id}>
               {employee.name} | {employee.role}
@@ -43,7 +44,7 @@ function About({ employees }) {
         </select>
       </form>
     
-      {selectedEmployee && <EmployeeCard employee={selectedEmployee} />}
+      {selectedEmployee && <EmployeeCard employee={selectedEmployee} employees = {employees} setEmployees = {setEmployees} />}
     </div>
   );
 }
