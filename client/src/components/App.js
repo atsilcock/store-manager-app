@@ -8,8 +8,7 @@ import New_Employee from './New_Employee';
 function App() {
   const [employees, setEmployees] = useState([]);
   console.log(employees);
-  const [stores, setStores] = useState([])
-  console.log(stores)
+
   
   useEffect(() => {
     fetch("http://127.0.0.1:5555/employees")
@@ -17,18 +16,11 @@ function App() {
       .then(data => setEmployees(data));
   }, []);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5555/store")
-      .then(response => response.json())
-      .then(data => setStores(data));
-  }, []);
-
-
   return (
     <Router>
       <NavBar />
       <Routes>
-        <Route path="/" element={<HomePage employees={employees} stores = {stores} />} />
+        <Route path="/" element={<HomePage employees={employees} />} />
         <Route path="/about" element={<About employees={employees} setEmployees = {setEmployees}/>} />
         <Route path="/New_Employee" element={<New_Employee />} />
       </Routes>

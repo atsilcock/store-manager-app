@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import UpdateEmployeeForm from "./UpdateEmployeeForm"
 
-function EmployeeCard({ employee, employees, setEmployees }) {
+function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
     const [updateForm, setUpdateForm] = useState(false)
     const [name, setName] = useState("")
     const [role, setRole] = useState("")
@@ -14,10 +14,10 @@ function EmployeeCard({ employee, employees, setEmployees }) {
         fetch(`http://127.0.0.1:5555/employees/${id}`, {
           method: "PATCH", 
           body: JSON.stringify({
-            role: role || employee.role,  // Use existing values if not updated
-            name: name || employee.name,
-            work_hours: workHours || employee.work_hours,
-            grocery_store_id: storeId || employee.grocery_store_id
+            role: role || selectedEmployee.role,  // Use existing values if not updated
+            name: name || selectedEmployee.name,
+            work_hours: workHours || selectedEmployee.work_hours,
+            grocery_store_id: storeId || selectedEmployee.grocery_store_id
           }), 
           headers: {
             "Content-Type": "application/json"
@@ -58,10 +58,10 @@ function EmployeeCard({ employee, employees, setEmployees }) {
   return (
     <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
       <h3>Employee Details</h3>
-      <p><strong>Name:</strong> {employee.name}</p>
-      <p><strong>Role:</strong> {employee.role}</p>
-      <p><strong>Work Hours:</strong> {employee.work_hours}</p>
-      <p><strong>Grocery Store:</strong> {employee.grocery_store_id}</p>
+      <p><strong>Name:</strong> {selectedEmployee.name}</p>
+      <p><strong>Role:</strong> {selectedEmployee.role}</p>
+      <p><strong>Work Hours:</strong> {selectedEmployee.work_hours}</p>
+      <p><strong>Grocery Store:</strong> {selectedEmployee.grocery_store_id}</p>
       <button onClick = {handleUpdateClick}>Update</button>
       {updateForm && ( 
         <UpdateEmployeeForm
@@ -74,10 +74,10 @@ function EmployeeCard({ employee, employees, setEmployees }) {
        setWorkHours={setWorkHours}
        setStoreId={setStoreId}
        handleUpdate={handleUpdate}
-       employee={employee}
+       employee={selectedEmployee}
       />
       )}
-      <button onClick={(event) => handleDelete(event, employee.id)}>Delete</button>
+      <button onClick={(event) => handleDelete(event, selectedEmployee.id)}>Delete</button>
     </div>
   );
 }

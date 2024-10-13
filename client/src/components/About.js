@@ -31,24 +31,23 @@ function About({ employees, setEmployees }) {
           name="employeeId"
           value={formik.values.employeeId}
           onChange={(e) => {
-            formik.handleChange(e); // Let Formik handle form state
-            handleEmployeeSelection(e.target.value); // Handle employee selection logic
+            formik.handleChange(e)
+            handleEmployeeSelection(e.target.value)
           }}
         >
           <option>Select an employee</option>
           {employees
-          .sort((a,b) => a.name.localeCompare(b.name))
+          .sort((a,b) => a.grocery_store_id - b.grocery_store_id)
           .map(employee => (
             <option key={employee.id} value={employee.id}>
-              {employee.name} | {employee.role}
+              {employee.name} | {employee.role} | Store ID: {employee.grocery_store_id}
             </option>
           ))}
         </select>
       </form>
-    
-      {selectedEmployee && <EmployeeCard employee={selectedEmployee} employees = {employees} setEmployees = {setEmployees} />}
+      {selectedEmployee && <EmployeeCard selectedEmployee={selectedEmployee} employees = {employees} setEmployees = {setEmployees} />}
     </div>
-  );
+  )
 }
 
 export default About;
