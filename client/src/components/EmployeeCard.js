@@ -8,22 +8,29 @@ function EmployeeCard({ employee, employees, setEmployees }) {
     const [workHours, setWorkHours] = useState("")
     const [storeId, setStoreId] = useState("")
 
-const handleUpdate = (id) => {
-    fetch(`http://127.0.0.1:5555/${id}`, {
-        method: "PATCH", 
-        body:JSON.stringify({
-            role: role,
-            name: name,
-            work_hours: workHours,
-            grocery_store_id: storeId
-        }), 
-        headers: {
+    const handleUpdate = (event, id) => {
+        event.preventDefault();  // Prevent default form submission behavior
+        fetch(`http://127.0.0.1:5555/employees/${id}`, {
+          method: "PATCH", 
+          body: JSON.stringify({
+            role: role || employee.role,  // Use existing values if not updated
+            name: name || employee.name,
+            work_hours: workHours || `{employee.work_hours} hours`,
+            grocery_store_id: storeId || employee.grocery_store_id
+          }), 
+          headers: {
             "Content-Type": "application/json"
-        }
-    })
-    .then(response => response.json())
-    .then(data => setemployeebyid([...employees, data]))
-}
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          const updatedEmployees = employees.map(emp => 
+            emp.id === id ? data : emp
+          )
+          setEmployees(updatedEmployees)
+          setUpdateForm(false)
+        });
+      };
 
     const handleUpdateClick = (event) => {
         event.preventDefault()
@@ -40,6 +47,42 @@ const handleUpdate = (id) => {
       <p><strong>Work Hours:</strong> {employee.work_hours}</p>
       <p><strong>Grocery Store:</strong> {employee.grocery_store_id}</p>
       <button onClick = {handleUpdateClick}>Update</button>
+      {updateForm && (
+        <form onSubmit={(event) => handleUpdate(event, employee.id)}>
+            <h3>Update Employees</h3>
+
+            <lable>Update Name: </lable>
+            <input 
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+            />
+
+            <label>Update Role: </label>
+            <input 
+            type="text"
+            value={role}
+            onChange={e => setRole(e.target.value)}
+            />
+            
+            <label>Update Work Hours:</label>
+            
+            <input 
+            type="number" 
+            value={workHours} 
+            onChange={(e) => setWorkHours(e.target.value)}  // Capture work hours input
+            />
+
+            <label>Update Store Id:</label>
+            <input 
+            type="number" 
+            value={storeId} 
+            onChange={(e) => setStoreId(e.target.value)}  // Capture store ID input
+            />
+
+            <button type="submit">Submit</button>
+        </form>
+      )}
       <button>Delete</button>
     </div>
   );

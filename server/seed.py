@@ -56,7 +56,7 @@ def seed_data():
             employee = Employee(
                 role=role,
                 name=name,
-                work_hours=f"{randint(20, 40)} hours",
+                work_hours=f"{randint(20, 40)}",
                 grocery_store_id=random_store.id
             )
 
