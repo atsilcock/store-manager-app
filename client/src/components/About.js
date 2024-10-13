@@ -23,7 +23,7 @@ function About({ employees, setEmployees }) {
   return (
     <div>
       <h1>Manage Employees</h1>
-      <h3>Select Employees or Departments</h3>
+      <h3>Select Employee</h3>
 
         <form onSubmit={formik.handleSubmit}>
         <label>Employees: </label>

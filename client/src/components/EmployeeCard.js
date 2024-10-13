@@ -2,14 +2,11 @@ import React, {useState, useEffect} from 'react';
 import UpdateEmployeeForm from "./UpdateEmployeeForm"
 
 function EmployeeCard({ employee, employees, setEmployees }) {
-    const [employeebyid, setemployeebyid] = ([])
     const [updateForm, setUpdateForm] = useState(false)
     const [name, setName] = useState("")
     const [role, setRole] = useState("")
     const [workHours, setWorkHours] = useState("")
     const [storeId, setStoreId] = useState("")
-
-    
 
 
     const handleUpdate = (event, id) => {
@@ -19,7 +16,7 @@ function EmployeeCard({ employee, employees, setEmployees }) {
           body: JSON.stringify({
             role: role || employee.role,  // Use existing values if not updated
             name: name || employee.name,
-            work_hours: workHours || `{employee.work_hours} hours`,
+            work_hours: workHours || employee.work_hours,
             grocery_store_id: storeId || employee.grocery_store_id
           }), 
           headers: {
@@ -46,7 +43,17 @@ function EmployeeCard({ employee, employees, setEmployees }) {
         setUpdateForm(!updateForm)
     }
 
-
+    const handleDelete = (event, id) => {
+        fetch(`http://127.0.0.1:5555/employees/${id}`, {
+            method: "Delete",
+          })
+          .then((response) => {
+            if (response.ok) {
+                const updatedEmployees = employees.filter(employee => employee.id !== id)
+                setEmployees(updatedEmployees)
+            }
+          })
+    }
 
   return (
     <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
@@ -56,7 +63,8 @@ function EmployeeCard({ employee, employees, setEmployees }) {
       <p><strong>Work Hours:</strong> {employee.work_hours}</p>
       <p><strong>Grocery Store:</strong> {employee.grocery_store_id}</p>
       <button onClick = {handleUpdateClick}>Update</button>
-      <UpdateEmployeeForm
+      {updateForm && ( 
+        <UpdateEmployeeForm
        name={name}
        role={role}
        workHours={workHours}
@@ -68,7 +76,8 @@ function EmployeeCard({ employee, employees, setEmployees }) {
        handleUpdate={handleUpdate}
        employee={employee}
       />
-      <button>Delete</button>
+      )}
+      <button onClick={(event) => handleDelete(event, employee.id)}>Delete</button>
     </div>
   );
 }
