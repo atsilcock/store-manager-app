@@ -5,12 +5,13 @@
 # Remote library imports
 from flask import request, make_response, jsonify
 from flask_restful import Resource
+from flask_cors import CORS
 from models import db, GroceryStore, Employee, Department
 
-
-# Local imports
 from config import app, db, api
-# Add your model imports
+
+
+CORS(app)
 
 
 # Views go here!
@@ -102,5 +103,5 @@ api.add_resource(Employees, "/employees")
 
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=5555, debug=False)
 
