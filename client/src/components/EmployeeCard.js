@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 function EmployeeCard({ employee, employees, setEmployees }) {
     const [employeebyid, setemployeebyid] = ([])
     const [updateForm, setUpdateForm] = useState(false)
-    const [name, setName] = ("")
-    const [role, setRole] = ("")
+    const [name, setName] = useState("")
+    const [role, setRole] = useState("")
+    const [workHours, setWorkHours] = useState("")
+    const [storeId, setStoreId] = useState("")
 
 const handleUpdate = (id) => {
     fetch(`http://127.0.0.1:5555/${id}`, {
         method: "PATCH", 
         body:JSON.stringify({
-            role: "
-            name: 
-            work_hours
-            grocery_store_id
+            role: role,
+            name: name,
+            work_hours: workHours,
+            grocery_store_id: storeId
         }), 
         headers: {
             "Content-Type": "application/json"
