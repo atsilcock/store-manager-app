@@ -25,7 +25,15 @@ def seed_data():
 
     stores = []
     for _ in range(4):
-        store = GroceryStore(name=fake.company(), location=fake.address())
+        while True:
+            address = fake.address()
+            if "Apt" not in address and "Apartment" not in address:
+                break
+            
+        store = GroceryStore(
+            name="King Soopers",
+            location=f"{fake.street_address()}, {fake.city()}, Colorado"
+        )
         stores.append(store)
     db.session.add_all(stores)
     db.session.commit()
