@@ -16,6 +16,7 @@ function App() {
       .then(data => setEmployees(data))
   }, [])
 
+
   return (
     <Router>
       <NavBar />
