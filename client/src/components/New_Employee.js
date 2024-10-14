@@ -5,9 +5,7 @@ import {useNavigate} from 'react-router-dom'
 function New_Employee({ employees, setEmployees }) {
   const navigate = useNavigate()
   
-
   const new_employee = (values, { resetForm }) => {
-    // Post request to create a new employee
     fetch("http://127.0.0.1:5555/employees", {
       method: "POST",
       headers: {
@@ -22,9 +20,11 @@ function New_Employee({ employees, setEmployees }) {
     })
     .then(response => response.json())
     .then(data => {
-      setEmployees([...employees, data]); // Update the employees state
+      console.log("New Employee Data", data)
+      setEmployees([...employees, data])
+      console.log([employees, data])
       navigate("/about")
-      resetForm(); // Reset the form after successful submission
+      resetForm()
     });
   };
 
@@ -38,9 +38,9 @@ function New_Employee({ employees, setEmployees }) {
           workHours: '',
           storeId: ''
         }}
-        onSubmit={new_employee}  // Handle form submission
+        onSubmit={new_employee}
       >
-        {({ values, handleChange, handleSubmit }) => (
+        {({ values,handleChange, handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
             <div>
               <label>Name: </label>

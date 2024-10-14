@@ -24,8 +24,8 @@ function About({ employees, setEmployees }) {
     <div>
       <h1>Manage Employees</h1>
       <h3>Select Employee</h3>
-
-        <form onSubmit={formik.handleSubmit}>
+      
+      <form onSubmit={formik.handleSubmit}>
         <label>Employees: </label>
         <select
           name="employeeId"
@@ -44,7 +44,7 @@ function About({ employees, setEmployees }) {
             </option>
           ))}
         </select>
-      </form>
+    </form>
       {selectedEmployee && <EmployeeCard selectedEmployee={selectedEmployee} employees = {employees} setEmployees = {setEmployees} />}
     </div>
   )

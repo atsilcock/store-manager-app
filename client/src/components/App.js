@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavBar from './NavBar';
-import HomePage from './Home';
-import About from './About';
-import New_Employee from './New_Employee';
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import NavBar from './NavBar'
+import HomePage from './Home'
+import About from './About'
+import New_Employee from './New_Employee'
 
 function App() {
   const [employees, setEmployees] = useState([]);
-  console.log(employees);
+  console.log(employees)
 
   
   useEffect(() => {
     fetch("http://127.0.0.1:5555/employees")
       .then(response => response.json())
-      .then(data => setEmployees(data));
-  }, []);
+      .then(data => setEmployees(data))
+  }, [])
 
   return (
     <Router>
