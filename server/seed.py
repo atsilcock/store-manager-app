@@ -2,8 +2,9 @@
 
 from random import randint, choice
 from faker import Faker
+from datetime import timedelta
 from app import app
-from models import db, GroceryStore, Employee, Department
+from models import db, GroceryStore, Employee, Department, employee_department
 
 roles = {
     "Cashier": ["Produce", "Dairy", "Bakery", "Deli"],
@@ -48,7 +49,7 @@ def seed_data():
             Department(name="Meat", grocery_store=store)
         ]
         all_departments.extend(departments)
-    db.session.add_all(departments)
+    db.session.add_all(all_departments)
     db.session.commit()
 
     employees = []
@@ -79,7 +80,15 @@ def seed_data():
             if randint(0, 1) and len(allowed_departments) > 1:
                 assigned_departments.append(choice(allowed_departments))
 
-            employee.departments.extend(assigned_departments)
+            # Use ORM to add the relationship with the start date and hours worked
+            for department in assigned_departments:
+                start_date = fake.date_between(start_date='-1y', end_date='today')
+                db.session.execute(employee_department.insert().values(
+                    employee_id=employee.id,
+                    department_id=department.id,
+                    hours_worked=randint(20, 40),
+                    employee_start_date=start_date
+                ))
 
             employees.append(employee)
 
