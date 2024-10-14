@@ -1,7 +1,7 @@
 Grocery Store Management API
 # Management System
 
-This project provides a RESTful API for managing employees, grocery stores, and departments. The API allows CRUD operations for employees and stores, while maintaining relationships between departments and employees within the store.
+This project provides a RESTful API for managing employees, grocery stores, and departments. The API allows CRUD operations for employees and stores, while maintaining relationships between departments and employees within the store. Additionally, it includes a client-side application for interacting with the API.
 
 ## Technologies Used
 - **Python 3.8.13**
@@ -14,6 +14,8 @@ This project provides a RESTful API for managing employees, grocery stores, and 
 - **Faker**: A library for generating fake data
 - **Alembic**: A lightweight database migration tool for SQLAlchemy
 - **IPDB**: Python debugger
+- **React**: A JavaScript library for building user interfaces
+- **Axios**: A promise-based HTTP client for the browser and Node.js
 
 ## Project Setup
 
@@ -53,6 +55,20 @@ To start the server, run the following command:
 python app.py
 ```
 By default, the server will be hosted on [http://localhost:5555](http://localhost:5555).
+
+### Running the Client
+
+Navigate to the `client` directory and install the dependencies:
+```bash
+cd client
+npm install
+```
+
+Start the client application:
+```bash
+npm start
+```
+By default, the client will be hosted on [http://localhost:3000](http://localhost:3000).
 
 ## API Endpoints
 
