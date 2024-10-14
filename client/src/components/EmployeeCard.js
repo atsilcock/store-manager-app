@@ -1,59 +1,50 @@
-import React, {useState, useEffect} from 'react';
-import UpdateEmployeeForm from "./UpdateEmployeeForm"
+import React, { useState } from 'react';
+import { Formik, Form, Field } from 'formik';
 
 function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
-    const [updateForm, setUpdateForm] = useState(false)
-    const [name, setName] = useState("")
-    const [role, setRole] = useState("")
-    const [workHours, setWorkHours] = useState("")
-    const [storeId, setStoreId] = useState("")
+  const [updateForm, setUpdateForm] = useState(false);
+  const [message, setMessage] = useState('');
 
+  const handleUpdate = (values, { resetForm }) => {
+    fetch(`http://127.0.0.1:5555/employees/${selectedEmployee.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        role: values.role || selectedEmployee.role,
+        name: values.name || selectedEmployee.name,
+        work_hours: values.workHours || selectedEmployee.work_hours,
+        grocery_store_id: values.storeId || selectedEmployee.grocery_store_id,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedEmployees = employees.map((emp) =>
+          emp.id === selectedEmployee.id ? data : emp
+        );
+        setEmployees(updatedEmployees);
+        setUpdateForm(false);
+        resetForm();
+      });
+  };
 
-    const handleUpdate = (event, id) => {
-        event.preventDefault();  // Prevent default form submission behavior
-        fetch(`http://127.0.0.1:5555/employees/${id}`, {
-          method: "PATCH", 
-          body: JSON.stringify({
-            role: role || selectedEmployee.role,  // Use existing values if not updated
-            name: name || selectedEmployee.name,
-            work_hours: workHours || selectedEmployee.work_hours,
-            grocery_store_id: storeId || selectedEmployee.grocery_store_id
-          }), 
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          const updatedEmployees = employees.map(emp => 
-            emp.id === id ? data : emp
-          )
-          setEmployees(updatedEmployees)
-          setUpdateForm(false)
-        });
+  const handleUpdateClick = (event) => {
+    event.preventDefault();
+    setUpdateForm(!updateForm);
+  };
 
-        setName("")
-        setWorkHours("")
-        setRole("")
-        setStoreId("")
-      };
-
-    const handleUpdateClick = (event) => {
-        event.preventDefault()
-        setUpdateForm(!updateForm)
-    }
-
-    const handleDelete = (event, id) => {
-        fetch(`http://127.0.0.1:5555/employees/${id}`, {
-            method: "Delete",
-          })
-          .then((response) => {
-            if (response.ok) {
-                const updatedEmployees = employees.filter(employee => employee.id !== id)
-                setEmployees(updatedEmployees)
-            }
-          })
-    }
+  const handleDelete = (id) => {
+    fetch(`http://127.0.0.1:5555/employees/${id}`, {
+      method: 'DELETE',
+    }).then((response) => {
+      if (response.ok) {
+        const updatedEmployees = employees.filter((employee) => employee.id !== id);
+        setEmployees(updatedEmployees);
+        setMessage(`${selectedEmployee.name} has been deleted`);
+      }
+    });
+  };
 
   return (
     <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
@@ -62,22 +53,49 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
       <p><strong>Role:</strong> {selectedEmployee.role}</p>
       <p><strong>Work Hours:</strong> {selectedEmployee.work_hours}</p>
       <p><strong>Grocery Store:</strong> {selectedEmployee.grocery_store_id}</p>
-      <button onClick = {handleUpdateClick}>Update</button>
-      {updateForm && ( 
-        <UpdateEmployeeForm
-       name={name}
-       role={role}
-       workHours={workHours}
-       storeId={storeId}
-       setName={setName}
-       setRole={setRole}
-       setWorkHours={setWorkHours}
-       setStoreId={setStoreId}
-       handleUpdate={handleUpdate}
-       employee={selectedEmployee}
-      />
+
+      <button onClick={handleUpdateClick}>Update</button>
+
+      {updateForm && (
+        <Formik
+          initialValues={{
+            name: selectedEmployee.name,
+            role: selectedEmployee.role,
+            workHours: selectedEmployee.work_hours,
+            storeId: selectedEmployee.grocery_store_id,
+          }}
+          onSubmit={handleUpdate}
+        >
+          {({ handleSubmit }) => (
+            <Form onSubmit={handleSubmit}>
+              <div>
+                <label>Name: </label>
+                <Field type="text" name="name" />
+              </div>
+
+              <div>
+                <label>Role: </label>
+                <Field type="text" name="role" />
+              </div>
+
+              <div>
+                <label>Work Hours: </label>
+                <Field type="number" name="workHours" />
+              </div>
+
+              <div>
+                <label>Store ID: </label>
+                <Field type="number" name="storeId" />
+              </div>
+
+              <button type="submit">Submit</button>
+            </Form>
+          )}
+        </Formik>
       )}
-      <button onClick={(event) => handleDelete(event, selectedEmployee.id)}>Delete</button>
+
+      <button onClick={() => handleDelete(selectedEmployee.id)}>Delete</button>
+      {message && <p>{message}</p>}
     </div>
   );
 }

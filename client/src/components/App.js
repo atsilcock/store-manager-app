@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage employees={employees} />} />
         <Route path="/about" element={<About employees={employees} setEmployees = {setEmployees}/>} />
-        <Route path="/New_Employee" element={<New_Employee />} />
+        <Route path="/New_Employee" element={<New_Employee employees={employees} setEmployees={setEmployees}/>} />
       </Routes>
     </Router>
   );
