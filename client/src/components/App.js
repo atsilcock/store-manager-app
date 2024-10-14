@@ -14,7 +14,7 @@ function App() {
     fetch("http://127.0.0.1:5555/employees")
       .then(response => response.json())
       .then(data => setEmployees(data))
-  }, [])
+  }, [employees])
 
 
   return (

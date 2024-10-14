@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Formik, Form, Field } from 'formik';
+import React, { useState } from 'react'
+import { Formik, Form, Field } from 'formik'
 
 function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
   const [updateForm, setUpdateForm] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('')
 
   const handleUpdate = (values, { resetForm }) => {
     fetch(`http://127.0.0.1:5555/employees/${selectedEmployee.id}`, {
@@ -23,15 +23,15 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
         const updatedEmployees = employees.map((emp) =>
           emp.id === selectedEmployee.id ? data : emp
         );
-        setEmployees(updatedEmployees);
+        setEmployees(updatedEmployees)
         setUpdateForm(false);
         resetForm();
       });
   };
 
   const handleUpdateClick = (event) => {
-    event.preventDefault();
-    setUpdateForm(!updateForm);
+    event.preventDefault()
+    setUpdateForm(!updateForm)
   };
 
   const handleDelete = (id) => {
@@ -39,9 +39,9 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
       method: 'DELETE',
     }).then((response) => {
       if (response.ok) {
-        const updatedEmployees = employees.filter((employee) => employee.id !== id);
-        setEmployees(updatedEmployees);
-        setMessage(`${selectedEmployee.name} has been deleted`);
+        const updatedEmployees = employees.filter((employee) => employee.id !== id)
+        setEmployees(updatedEmployees)
+        setMessage(`${selectedEmployee.name} has been deleted`)
       }
     });
   };
