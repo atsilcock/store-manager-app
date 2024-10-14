@@ -43,5 +43,7 @@ class Department(db.Model, SerializerMixin):
 
 employee_department = db.Table('employee_department',
     db.Column('employee_id', db.Integer, db.ForeignKey('employees.id')),
-    db.Column('department_id', db.Integer, db.ForeignKey('departments.id'))
+    db.Column('department_id', db.Integer, db.ForeignKey('departments.id')),
+    db.Column('hours_worked', db.Integer, nullable=False, default =0),
+    db.Column('employee_start_date', db.Date, nullable=False)
 ) 
