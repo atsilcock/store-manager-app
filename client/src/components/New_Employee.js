@@ -15,7 +15,9 @@ function New_Employee({ employees, setEmployees }) {
         name: values.name,
         role: values.role,
         work_hours: values.workHours,
-        grocery_store_id: values.storeId
+        grocery_store_id: values.storeId,
+        hours_worked: values.hoursWorked,
+        employee_start_date: values.startDate
       })
     })
     .then(response => response.json())
@@ -36,7 +38,9 @@ function New_Employee({ employees, setEmployees }) {
           name: '',
           role: '',
           workHours: '',
-          storeId: ''
+          storeId: '',
+          hoursWorked: "",
+          startDate: ""
         }}
         onSubmit={new_employee}
       >
@@ -86,12 +90,34 @@ function New_Employee({ employees, setEmployees }) {
               />
             </div>
 
+            <div>
+              <label>Hours Worked: </label>
+              <Field
+                type="number"
+                name="hoursWorked"
+                value={values.hoursWorked}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div>
+              <label>Start Date: </label>
+              <Field
+                type="date"
+                name="startDate"
+                value={values.startDate}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
             <button type="submit">Add Employee</button>
           </Form>
         )}
       </Formik>
     </div>
-  );
+  )
 }
 
-export default New_Employee;
+export default New_Employee
