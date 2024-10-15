@@ -24,8 +24,13 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
           emp.id === selectedEmployee.id ? data : emp
         );
         setEmployees(updatedEmployees)
-        setUpdateForm(false);
         resetForm();
+        setUpdateForm(false);
+        setMessage(`${selectedEmployee.name} has been updated (select another employee to update)`)
+        setTimeout(() => {
+          setMessage('')
+          window.location.reload()
+        }, 3000)
       });
   };
 
@@ -42,6 +47,10 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
         const updatedEmployees = employees.filter((employee) => employee.id !== id)
         setEmployees(updatedEmployees)
         setMessage(`${selectedEmployee.name} has been deleted`)
+      setTimeout(() => {
+        setMessage('')
+        window.location.reload()
+      }, 3000)
       }
     });
   };
@@ -59,15 +68,16 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
       {updateForm && (
         <Formik
           initialValues={{
-            name: selectedEmployee.name,
-            role: selectedEmployee.role,
-            workHours: selectedEmployee.work_hours,
-            storeId: selectedEmployee.grocery_store_id,
+            name: "",
+            role: "",
+            workHours: "",
+            storeId: "",
           }}
           onSubmit={handleUpdate}
         >
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
+              <h4>ONLY UPDATE WHAT IS NEEDED</h4>
               <div>
                 <label>Name: </label>
                 <Field type="text" name="name" />
