@@ -28,7 +28,7 @@ class Employee(db.Model, SerializerMixin):
     grocery_store_id = db.Column(db.Integer, db.ForeignKey('grocery_store.id'))
     departments = db.relationship('Department', secondary='employee_department', back_populates='employees')
 
-    serialize_rules = ('-departments.employees')
+    serialize_rules = ('-departments.employees', )
 
     @validates('role')
     def validate_role(self, key, role):
