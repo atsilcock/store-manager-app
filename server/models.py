@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from config import db
+from sqlalchemy.orm import validates
 
 class GroceryStore(db.Model, SerializerMixin):
     __tablename__ = 'grocery_store'
@@ -27,7 +28,25 @@ class Employee(db.Model, SerializerMixin):
     grocery_store_id = db.Column(db.Integer, db.ForeignKey('grocery_store.id'))
     departments = db.relationship('Department', secondary='employee_department', back_populates='employees')
 
-    serialize_rules = ('-departments.employees') 
+    serialize_rules = ('-departments.employees')
+
+    @validates('role')
+    def validate_role(self, key, role):
+        if not role:
+            raise ValueError("Role cannot be empty")
+        return role
+
+    @validates('name')
+    def validate_name(self, key, name):
+        if not name:
+            raise ValueError("Name cannot be empty")
+        return name
+
+    @validates('work_hours')
+    def validate_work_hours(self, key, work_hours):
+        if not work_hours.isdigit() or int(work_hours) < 0:
+            raise ValueError("Work hours must be a non-negative integer")
+        return work_hours
         
 
 class Department(db.Model, SerializerMixin):
@@ -40,6 +59,12 @@ class Department(db.Model, SerializerMixin):
     employees = db.relationship('Employee', secondary='employee_department', back_populates='departments')
 
     serialize_rules = ('-employees.departments', '-grocery_store.departments')
+
+    @validates('name')
+    def validate_name(self, key, name):
+        if not name:
+            raise ValueError("Name cannot be empty")
+        return name
 
 employee_department = db.Table('employee_department',
     db.Column('employee_id', db.Integer, db.ForeignKey('employees.id')),
