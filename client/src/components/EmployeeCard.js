@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
 
 function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
   const [updateForm, setUpdateForm] = useState(false);
@@ -33,6 +34,7 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
         }, 3000)
       });
   };
+  
 
   const handleUpdateClick = (event) => {
     event.preventDefault()
@@ -55,6 +57,23 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
     });
   };
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Name must be at least 2 characters')
+      .max(50, 'Name cannot exceed 50 characters'),
+    role: Yup.string()
+      .min(3, 'Role must be at least 3 characters')
+      .max(30, 'Role cannot exceed 30 characters'),
+    workHours: Yup.number()
+      .min(1, 'Work hours must be at least 1')
+      .max(80, 'Work hours cannot exceed 80')
+      .integer('Work hours must be a whole number'),
+    storeId: Yup.number()
+      .required('Store ID is required')
+      .positive('Store ID must be a positive number')
+      .integer('Store ID must be an integer'),
+  });
+
   return (
     <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
       <h3>Employee Details</h3>
@@ -73,6 +92,7 @@ function EmployeeCard({ selectedEmployee, employees, setEmployees }) {
             workHours: "",
             storeId: "",
           }}
+          validationSchema={validationSchema}
           onSubmit={handleUpdate}
         >
           {({ handleSubmit }) => (
